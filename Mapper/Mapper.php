@@ -3,6 +3,7 @@
 namespace Bilyiv\RequestDataBundle\Mapper;
 
 use Bilyiv\RequestDataBundle\Formats;
+use Bilyiv\RequestDataBundle\RequestDataInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -30,7 +31,7 @@ class Mapper implements MapperInterface
     /**
      * {@inheritdoc}
      */
-    public function map($data, string $format, string $class): object
+    public function map($data, string $format, string $class): RequestDataInterface
     {
         if (Formats::FORM === $format && is_array($data)) {
             return $this->mapFormFormat($data, $class);
@@ -43,9 +44,9 @@ class Mapper implements MapperInterface
      * @param array  $data
      * @param string $class
      *
-     * @return object
+     * @return RequestDataInterface
      */
-    protected function mapFormFormat(array $data, string $class): object
+    protected function mapFormFormat(array $data, string $class): RequestDataInterface
     {
         $object = new $class();
 

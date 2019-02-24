@@ -2,6 +2,8 @@
 
 namespace Bilyiv\RequestDataBundle\Mapper;
 
+use Bilyiv\RequestDataBundle\RequestDataInterface;
+
 /**
  * @author Vladyslav Bilyi <beliyvladislav@gmail.com>
  */
@@ -14,7 +16,7 @@ interface MapperInterface
      * @param string $format
      * @param string $class
      *
-     * @return object
+     * @return RequestDataInterface
      */
-    public function map($data, string $format, string $class): object;
+    public function map($data, string $format, string $class): RequestDataInterface;
 }

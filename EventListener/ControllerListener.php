@@ -6,6 +6,7 @@ use Bilyiv\RequestDataBundle\Event\FinishEvent;
 use Bilyiv\RequestDataBundle\Events;
 use Bilyiv\RequestDataBundle\Extractor\ExtractorInterface;
 use Bilyiv\RequestDataBundle\Mapper\MapperInterface;
+use Bilyiv\RequestDataBundle\RequestDataInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -29,21 +30,14 @@ class ControllerListener
      */
     private $mapper;
 
-    /**
-     * @var string
-     */
-    private $prefix;
-
     public function __construct(
         EventDispatcherInterface $dispatcher,
         ExtractorInterface $extractor,
-        MapperInterface $mapper,
-        string $prefix
+        MapperInterface $mapper
     ) {
         $this->dispatcher = $dispatcher;
         $this->extractor = $extractor;
         $this->mapper = $mapper;
-        $this->prefix = $prefix;
     }
 
     /**
@@ -67,7 +61,7 @@ class ControllerListener
         foreach ($parameters as $parameter) {
             $class = $parameter->getClass();
 
-            if (null !== $class && 0 === strpos($class->getName(), $this->prefix)) {
+            if (null !== $class && in_array(RequestDataInterface::class, $class->getInterfaceNames())) {
                 $request = $event->getRequest();
 
                 $format = $this->extractor->extractFormat($request);
